@@ -4,6 +4,8 @@ Xiaolong Wang
 
 UC San Diego, MIT
 
+[Video](https://x.com/xuxin_cheng/status/1783838823849546067)
+
 <p align="center">
 <img src="./img/television.jpg" width="80%"/>
 </p>
@@ -48,7 +50,7 @@ sudo ufw allow 8012
 ```
 5.
 ```python
-self.app = Vuer(host='0.0.0.0', cert="", key="")
+self.app = Vuer(host='0.0.0.0', cert="./cert.pem", key="./key.pem")
 ```
 
 6. install ca-certificates on VisionPro
