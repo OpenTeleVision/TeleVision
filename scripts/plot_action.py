@@ -12,9 +12,9 @@ import pickle
 
 if __name__ == '__main__':
 
-    root = "../data"
-    exp_name = "white_can_insert-2024_05_24-18_27_22"
-    episode_name = "processed_episode_10.hdf5"
+    root = "../data/recordings"
+    exp_name = "00-can-sorting"
+    episode_name = "processed_episode_0.hdf5"
     episode_path = Path(root) / exp_name / "processed" / episode_name
 
     data = h5py.File(str(episode_path), 'r')

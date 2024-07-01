@@ -1,9 +1,3 @@
-# Copyright (c) 2022 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
-#
-# Licensed under the MIT License [see LICENSE for details].
-
-from typing import Optional
-
 import numpy as np
 import pinocchio as pin
 from pytransform3d import rotations
