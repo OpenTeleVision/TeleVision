@@ -1,7 +1,4 @@
 import numpy as np
-import pinocchio as pin
-from pytransform3d import rotations
-
 
 def mat_update(prev_mat, mat):
     if np.linalg.det(mat) == 0:

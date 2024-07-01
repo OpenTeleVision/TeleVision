@@ -11,7 +11,6 @@ import os
 import multiprocessing
 from numpy.lib.stride_tricks import as_strided
 
-# import pinocchio as pin
 from pytransform3d import rotations
 import concurrent.futures
 from pathlib import Path
