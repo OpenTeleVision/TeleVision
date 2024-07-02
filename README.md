@@ -1,4 +1,5 @@
-## 📺 Open-TeleVision: open-source tele-operation with vision 🤖
+<h1 align="center"><img src="img/logo.png" width="40"  style="vertical-align: middle;"> Open-TeleVision: Teleoperation with
+Immersive Active Visual Feedback</h1>
 Xuxin Cheng*, Jialong Li*, Shiqi Yang, Ge Yang, 
 Xiaolong Wang
 
