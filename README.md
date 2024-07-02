@@ -117,7 +117,7 @@ cd teleop && python teleop_hand.py
 <img src=img/sim.png>
 
 ## Training Guide
-1. Download dataset from <link>.
+1. Download dataset from https://drive.google.com/drive/folders/11WO96mUMjmxRo9Hpvm4ADz7THuuGNEMY?usp=sharing.
 
 2. Place the downloaded dataset in ``data/recordings/``.
 
