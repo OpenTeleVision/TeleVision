@@ -5,7 +5,7 @@ Immersive Active Visual Feedback</h1>
 <p align="center">
     <a href="https://chengxuxin.github.io/"><strong>Xuxin Cheng*</strong></a>
     ·
-    <a href="https://rexskywalkerlee.github.io/"><strong>Jialong Li*</strong></a>
+    <a href=""><strong>Jialong Li*</strong></a>
     ·
     <a href="https://aaronyang1223.github.io/"><strong>Shiqi Yang</strong></a>
     <br>
@@ -107,12 +107,14 @@ ngrok http 8012
 3. Copy the https address and open the browser on Meta Quest3 and go to the address.
 
 ### Simulation Teleoperation Example
-After setup up streaming with either local or network streaming following the above instructions, you can try teleoperating two robot hands in Issac Gym:
+1. After setup up streaming with either local or network streaming following the above instructions, you can try teleoperating two robot hands in Issac Gym:
 ```
-cd scripts && python teleop_hand.py
+cd teleop && python teleop_hand.py
 ```
+2. Go to your vuer site on VisionPro, click `Enter VR` and ``Allow`` to enter immersive environment.
 
-
+3. See your hands in 3D!
+<img src=img/sim.png>
 
 ## Training Guide
 1. Download dataset from <link>.
