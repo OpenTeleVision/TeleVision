@@ -1,18 +1,35 @@
 <h1 align="center"><img src="img/logo.png" width="40"  style="vertical-align: middle;"> Open-TeleVision: Teleoperation with
+
 Immersive Active Visual Feedback</h1>
-Xuxin Cheng*, Jialong Li*, Shiqi Yang, Ge Yang, 
-Xiaolong Wang
 
-UC San Diego, MIT
+<p align="center">
+    <a href="https://chengxuxin.github.io/"><strong>Xuxin Cheng*</strong></a>
+    ·
+    <a href="https://rexskywalkerlee.github.io/"><strong>Jialong Li*</strong></a>
+    ·
+    <a href="https://aaronyang1223.github.io/"><strong>Shiqi Yang</strong></a>
+    <br>
+    <a href="https://www.episodeyang.com/"><strong>Ge Yang</strong></a>
+    ·
+    <a href="https://xiaolonw.github.io/"><strong>Xiaolong Wang</strong></a>
+</p>
 
-[Video](https://x.com/xuxin_cheng/status/1783838823849546067)
+<p align="center">
+    <img src="img/UCSanDiegoLogo-BlueGold.png" height=50" style="margin-right: 100px;">
+    <img src="img/mit-logo.png" height="50">
+</p>
+
+<p align="center">
+<h3 align="center"><a href="https://robot-tv.github.io/">Website</a> | <a href="https://arxiv.org/abs/2407.01512/">arXiv</a> | <a href="">Summary</a> </h3>
+  <div align="center"></div>
+</p>
 
 <p align="center">
 <img src="./img/television.jpg" width="80%"/>
 </p>
 
 ## Introduction
-Stream head, hand, wrist data from VisionPro or Meta Quest 3. Stream real-time stereo video from camera to VR Devices. 
+This code contains implementation for teleoperation and imitation learning of Open-TeleVision.
 
 ## Installation
 
@@ -89,6 +106,14 @@ ngrok http 8012
 ```
 3. Copy the https address and open the browser on Meta Quest3 and go to the address.
 
+### Simulation Teleoperation Example
+After setup up streaming with either local or network streaming following the above instructions, you can try teleoperating two robot hands in Issac Gym:
+```
+cd scripts && python teleop_hand.py
+```
+
+
+
 ## Training Guide
 1. Download dataset from <link>.
 
@@ -103,13 +128,13 @@ ngrok http 8012
     python imitate_episodes.py --policy_class ACT --kl_weight 10 --chunk_size 60 --hidden_dim 512 --batch_size 45 --dim_feedforward 3200 --num_epochs 50000 --lr 5e-5 --seed 0 --taskid 00 --exptid 01-sample-expt
 ```
 
-6. After finished training, save jit for the desired checkpoint:
+6. After training, save jit for the desired checkpoint:
 ```
     python imitate_episodes.py --policy_class ACT --kl_weight 10 --chunk_size 60 --hidden_dim 512 --batch_size 45 --dim_feedforward 3200 --num_epochs 50000 --lr 5e-5 --seed 0 --taskid 00 --exptid 01-sample-expt\
                                --save_jit --resume_ckpt 25000
 ```
 
-7. You can visualize the trained policy with input from dataset using ``scripts/deploy_sim.py``.
+7. You can visualize the trained policy with inputs from dataset using ``scripts/deploy_sim.py``.
 
 ## Citation
 ```
