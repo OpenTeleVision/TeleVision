@@ -25,7 +25,7 @@ Immersive Active Visual Feedback</h1>
 </p>
 
 <p align="center">
-<img src="./img/television.jpg" width="80%"/>
+<img src="./img/main.webp" width="80%"/>
 </p>
 
 ## Introduction
