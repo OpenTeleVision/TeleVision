@@ -1,4 +1,4 @@
-<h1 align="center"><img src="img/logo.png" width="40"  style="vertical-align: middle;"> Open-TeleVision: Teleoperation with
+<h1 align="center"><img src="img/logo.png" width="40"> Open-TeleVision: Teleoperation with
 
 Immersive Active Visual Feedback</h1>
 
@@ -15,12 +15,12 @@ Immersive Active Visual Feedback</h1>
 </p>
 
 <p align="center">
-    <img src="img/UCSanDiegoLogo-BlueGold.png" height=50" style="margin-right: 100px;">
+    <img src="img/UCSanDiegoLogo-BlueGold.png" height=50"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
     <img src="img/mit-logo.png" height="50">
 </p>
 
 <p align="center">
-<h3 align="center"><a href="https://robot-tv.github.io/">Website</a> | <a href="https://arxiv.org/abs/2407.01512/">arXiv</a> | <a href="">Summary</a> </h3>
+<h3 align="center"><a href="https://robot-tv.github.io/">Website</a> | <a href="https://arxiv.org/abs/2407.01512/">arXiv</a> | <a href="">Video</a> | <a href="">Summary</a> </h3>
   <div align="center"></div>
 </p>
 
