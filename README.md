@@ -18,11 +18,22 @@ Stream head, hand, wrist data from VisionPro or Meta Quest 3. Stream real-time s
 ```bash
 conda create -n tv python=3.8
 conda activate tv
-pip install 'vuer[all]==0.0.31rc7 opencv-python numpy'
+pip install -r requirements.txt
+cd act/detr && pip install -e .
 ```
+
+If you want to try teleoperation example with an active cam with zed camera (teleop_active_cam.py):
+
 Install zed sdk: https://www.stereolabs.com/developers/release/
 
-## Local streaming
+If you want to try teleoperation example in a simulated environment (teleop_hand.py):
+
+Install Isaac Gym: https://developer.nvidia.com/isaac-gym/
+
+
+## Teleoperation Guide
+
+### Local streaming
 Apple does not allow WebXR on non-https connections. To test the application locally, we need to create a self-signed certificate and install it on the client. You need a ubuntu machine and a router. Connect the VisionPro and the ubuntu machine to the same router. 
 1. install mkcert: https://github.com/FiloSottile/mkcert
 2. check local ip address: 
@@ -67,7 +78,7 @@ settings > Apps > Safari > Advanced > Feature Flags > Enable WebXR Related Featu
 
 8. Click `Enter VR` and ``Allow`` to start the VR session.
 
-## Network Streaming
+### Network Streaming
 For Meta Quest3, installation of the certificate is not trivial. We need to use a network streaming solution. We use `ngrok` to create a secure tunnel to the server. This method will work for both VisionPro and Meta Quest3.
 
 1. Install ngrok: https://ngrok.com/download
@@ -77,11 +88,34 @@ ngrok http 8012
 ```
 3. Copy the https address and open the browser on Meta Quest3 and go to the address.
 
+## Training Guide
+1. Download dataset from <link>.
+
+2. Place the downloaded dataset in ``data/recordings/``.
+
+3. Process the specified dataset for training using ``scripts/post_process.py``.
+
+4. You can verify the image and action sequences of a specific episode in the dataset using ``scripts/replay_demo.py``.
+
+5. To train ACT, run:
+```
+    python imitate_episodes.py --policy_class ACT --kl_weight 10 --chunk_size 60 --hidden_dim 512 --batch_size 45 --dim_feedforward 3200 --num_epochs 50000 --lr 5e-5 --seed 0 --taskid 00 --exptid 01-sample-expt
+```
+
+6. After finished training, save jit for the desired checkpoint:
+```
+    python imitate_episodes.py --policy_class ACT --kl_weight 10 --chunk_size 60 --hidden_dim 512 --batch_size 45 --dim_feedforward 3200 --num_epochs 50000 --lr 5e-5 --seed 0 --taskid 00 --exptid 01-sample-expt\
+                               --save_jit --resume_ckpt 25000
+```
+
+7. You can visualize the trained policy with input from dataset using ``scripts/deploy_sim.py``.
+
 ## Citation
 ```
-@misc{cheng2022open,
-  title={Open-TeleVision: open-source tele-operation with vision},
-  author={Cheng, Xuxin and Li, Jialong and Yang, Shiqi and Yang, Ge and Wang, Xiaolong},
-  year={2024}
+@article{cheng2024tv,
+title={Open-TeleVision: Teleoperation with Immersive Active Visual Feedback},
+author={Cheng, Xuxin and Li, Jialong and Yang, Shiqi and Yang, Ge and Wang, Xiaolong},
+journal={arXiv preprint arXiv:2407.01512},
+year={2024}
 }
 ```
