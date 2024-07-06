@@ -111,30 +111,6 @@ def process_episode(file_name, ep):
     timesteps = len(closest_indices)
     qpos_actions = actions[closest_indices]
     cmds = cmds[closest_indices]
-
-    # compose new actions
-    # left wrist relative pose(6) + left hand qpos(6) + right wrist relative pose(6) + right hand qpos(6) + head yp(2)
-    ee_actions = np.zeros((timesteps, 6+6+6+6+2))
-    for t in range(timesteps):
-
-        # compute left wrist absolute pose
-        left_ee = cmds[t, 16:32].reshape((4, 4))
-        ee_actions[t, 0:3] = left_ee[0:3, 3]
-        ee_actions[t, 3:6] = rotations.intrinsic_euler_zyx_from_active_matrix(left_ee[0:3, 0:3])
-
-        # left hand qpos
-        ee_actions[t, 6:12] = qpos_actions[t, 7:13]
-
-        # compute right wrist absolute pose
-        right_ee = cmds[t, 32:48].reshape((4, 4))
-        ee_actions[t, 12:15] = right_ee[0:3, 3]
-        ee_actions[t, 15:18] = rotations.intrinsic_euler_zyx_from_active_matrix(right_ee[0:3, 0:3])
-
-        # right hand qpos
-        ee_actions[t, 18:24] = qpos_actions[t, 20:26]
-
-        # head yp
-        ee_actions[t, 24:26] = qpos_actions[t, 26:28]
     
     # save_video(left_imgs, file_name + ".mp4")
     path = os.path.dirname(file_name)
@@ -145,7 +121,6 @@ def process_episode(file_name, ep):
         start = time.time()
         hf.create_dataset('observation.image.left', data=left_imgs)
         hf.create_dataset('observation.image.right', data=right_imgs)
-        hf.create_dataset('ee_action', data=ee_actions.astype(np.float32))
         hf.create_dataset('cmds', data=cmds.astype(np.float32))
         hf.create_dataset('observation.state', data=states[closest_indices].astype(np.float32))
         hf.create_dataset('qpos_action', data=qpos_actions.astype(np.float32))

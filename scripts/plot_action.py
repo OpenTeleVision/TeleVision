@@ -18,7 +18,7 @@ if __name__ == '__main__':
     episode_path = Path(root) / exp_name / "processed" / episode_name
 
     data = h5py.File(str(episode_path), 'r')
-    actions = np.array(data['action'])
+    actions = np.array(data['qpos_action'])
     data.close()
     timestamps = actions.shape[0]
     action_dim = actions.shape[1]

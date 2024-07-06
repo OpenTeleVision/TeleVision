@@ -6,7 +6,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from pytransform3d import rotations
-from core.RobotController import RobotController
 
 from pathlib import Path
 import h5py
@@ -20,7 +19,6 @@ from sklearn.decomposition import PCA
 class Player:
     def __init__(self, dt=1/60):
         self.dt = dt
-        self.controller = None
         self.head_mat = None
         self.left_wrist_mat = None
         self.right_wrist_mat = None
@@ -91,14 +89,11 @@ class Player:
         cam_target = gymapi.Vec3(0, 0, 1)
         self.gym.viewer_camera_look_at(self.viewer, None, cam_pos, cam_target)
 
-        self.controller = RobotController()
-        self.controller.load_config('h1_inspire.yml')
-
         plt.figure(figsize=(12, 6))
         plt.ion()
 
-    def step(self, action, left_img, right_img, control_mode='qpos'):
-        qpos = self.convert_h1_qpos(action, control_mode)
+    def step(self, action, left_img, right_img):
+        qpos = self.convert_h1_qpos(action)
         states = np.zeros(qpos.shape, dtype=gymapi.DofState.dtype)
         states['pos'] = qpos
         self.gym.set_actor_dof_states(self.env, self.robot_handle, states, gymapi.STATE_POS)
@@ -124,63 +119,34 @@ class Player:
         self.gym.destroy_sim(self.sim)
         plt.close()
 
-    def convert_h1_qpos(self, action, control_mode):
+    def convert_h1_qpos(self, action):
         '''
         left_arm_indices = [13, 14, 15, 16, 17, 18, 19]
         right_arm_indices = [32, 33, 34, 35, 36, 37, 38]
         left_hand_indices = [20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
         right_hand_indices = [39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50]
         '''
-        if control_mode == 'ee':
-            left_wrist_mat = np.eye(4)
-            left_wrist_mat[0:3, 3] = action[0:3]
-            left_wrist_mat[0:3, 0:3] = rotations.active_matrix_from_intrinsic_euler_zyx(action[3:6])
+        qpos = np.zeros(51)
+        qpos[13:20] = action[0:7]
 
-            right_wrist_mat = np.eye(4)
-            right_wrist_mat[0:3, 3] = action[12:15]
-            right_wrist_mat[0:3, 0:3] = rotations.active_matrix_from_intrinsic_euler_zyx(action[15:18])
+        # left hand actions
+        qpos[20:22] = action[7]
+        qpos[22:24] = action[8]
+        qpos[24:26] = action[9]
+        qpos[26:28] = action[10]
+        qpos[28] = action[11]
+        qpos[29:32] = action[12] * np.array([1, 1.6, 2.4])
 
-            self.controller.update(np.eye(4), left_wrist_mat, right_wrist_mat, np.zeros((25,3)), np.zeros((25,3)))
-            qpos = self.controller.qpos
+        qpos[32:39] = action[13:20]
 
-            # left hand actions
-            qpos[20:22] = action[6]
-            qpos[22:24] = action[7]
-            qpos[24:26] = action[8]
-            qpos[26:28] = action[9]
-            qpos[28] = action[10]
-            qpos[29:32] = action[11] * np.array([1, 1.6, 2.4])
+        # right hand actions
+        qpos[39:41] = action[20]
+        qpos[41:43] = action[21]
+        qpos[43:45] = action[22]
+        qpos[45:47] = action[23]
+        qpos[47] = action[24]
+        qpos[48:51] = action[25] * np.array([1, 1.6, 2.4])
 
-            # right hand actions
-            qpos[39:41] = action[18]
-            qpos[41:43] = action[19]
-            qpos[43:45] = action[20]
-            qpos[45:47] = action[21]
-            qpos[47] = action[22]
-            qpos[48:51] = action[23] * np.array([1, 1.6, 2.4])
-        elif control_mode == 'qpos':
-            qpos = np.zeros(51)
-            qpos[13:20] = action[0:7]
-
-            # left hand actions
-            qpos[20:22] = action[7]
-            qpos[22:24] = action[8]
-            qpos[24:26] = action[9]
-            qpos[26:28] = action[10]
-            qpos[28] = action[11]
-            qpos[29:32] = action[12] * np.array([1, 1.6, 2.4])
-
-            qpos[32:39] = action[13:20]
-
-            # right hand actions
-            qpos[39:41] = action[20]
-            qpos[41:43] = action[21]
-            qpos[43:45] = action[22]
-            qpos[45:47] = action[23]
-            qpos[47] = action[24]
-            qpos[48:51] = action[25] * np.array([1, 1.6, 2.4])
-        else:
-            raise NotImplementedError('Invalid control mode')
         return qpos
 
 if __name__ == '__main__':

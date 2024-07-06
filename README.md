@@ -34,20 +34,22 @@ This code contains implementation for teleoperation and imitation learning of Op
 ## Installation
 
 ```bash
-conda create -n tv python=3.8
-conda activate tv
-pip install -r requirements.txt
-cd act/detr && pip install -e .
+    conda create -n tv python=3.8
+    conda activate tv
+    pip install -r requirements.txt
+    cd act/detr && pip install -e .
 ```
 
-If you want to try teleoperation example with an active cam with zed camera (teleop_active_cam.py):
+Install ZED sdk: https://www.stereolabs.com/developers/release/
 
-Install zed sdk: https://www.stereolabs.com/developers/release/
+Install ZED Python API:
+```
+    cd /usr/local/zed/ && python get_python_api.py
+```
 
 If you want to try teleoperation example in a simulated environment (teleop_hand.py):
 
 Install Isaac Gym: https://developer.nvidia.com/isaac-gym/
-
 
 ## Teleoperation Guide
 
@@ -57,34 +59,34 @@ Apple does not allow WebXR on non-https connections. To test the application loc
 2. check local ip address: 
 
 ```
-ifconfig | grep inet
+    ifconfig | grep inet
 ```
 Suppose the local ip address of the ubuntu machine is `192.168.8.102`.
 
 3. create certificate: 
 
 ```
-mkcert -install && mkcert -cert-file cert.pem -key-file key.pem 192.168.8.102 localhost 127.0.0.1
+    mkcert -install && mkcert -cert-file cert.pem -key-file key.pem 192.168.8.102 localhost 127.0.0.1
 ```
 
 4. open firewall on server
 ```
-sudo iptables -A INPUT -p tcp --dport 8012 -j ACCEPT
-sudo iptables-save
-sudo iptables -L
+    sudo iptables -A INPUT -p tcp --dport 8012 -j ACCEPT
+    sudo iptables-save
+    sudo iptables -L
 ```
 or can be done with `ufw`:
 ```
-sudo ufw allow 8012
+    sudo ufw allow 8012
 ```
 5.
-```python
-self.app = Vuer(host='0.0.0.0', cert="./cert.pem", key="./key.pem")
+```
+    self.app = Vuer(host='0.0.0.0', cert="./cert.pem", key="./key.pem")
 ```
 
 6. install ca-certificates on VisionPro
 ```
-mkcert -CAROOT
+    mkcert -CAROOT
 ```
 Copy the rootCA.pem via AirDrop to VisionPro and install it.
 
@@ -102,14 +104,19 @@ For Meta Quest3, installation of the certificate is not trivial. We need to use 
 1. Install ngrok: https://ngrok.com/download
 2. Run ngrok
 ```
-ngrok http 8012
+    ngrok http 8012
 ```
 3. Copy the https address and open the browser on Meta Quest3 and go to the address.
+
+ps. When using ngrok for network streaming, remember to call `OpenTeleVision` with:
+```
+    self.tv = OpenTeleVision(self.resolution_cropped, self.shm.name, image_queue, toggle_streaming, ngrok=True)
+```
 
 ### Simulation Teleoperation Example
 1. After setup up streaming with either local or network streaming following the above instructions, you can try teleoperating two robot hands in Issac Gym:
 ```
-cd teleop && python teleop_hand.py
+    cd teleop && python teleop_hand.py
 ```
 2. Go to your vuer site on VisionPro, click `Enter VR` and ``Allow`` to enter immersive environment.
 
@@ -136,7 +143,10 @@ cd teleop && python teleop_hand.py
                                --save_jit --resume_ckpt 25000
 ```
 
-7. You can visualize the trained policy with inputs from dataset using ``scripts/deploy_sim.py``.
+7. You can visualize the trained policy with inputs from dataset using ``scripts/deploy_sim.py``, example usage:
+```
+    python deploy_sim.py --taskid 00 --exptid 01 --resume_ckpt 25000
+```
 
 ## Citation
 ```

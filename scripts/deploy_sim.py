@@ -86,13 +86,7 @@ if __name__ == '__main__':
     policy_path = Path(exp_path) / f"traced_jit_{args['resume_ckpt']}.pt"
     
     temporal_agg = True
-    control_mode = "qpos"
-    if control_mode == "ee":
-        action_dim = 26
-    elif control_mode == "qpos":
-        action_dim = 28
-    else:
-        raise ValueError("Invalid control mode")
+    action_dim = 28
 
     chunk_size = 60
     device = "cuda"
@@ -150,7 +144,7 @@ if __name__ == '__main__':
             if history_stack > 0:
                 last_action_queue.append(act)
             act = act * norm_stats["action_std"] + norm_stats["action_mean"]
-            player.step(act, left_imgs[t], right_imgs[t], control_mode)
+            player.step(act, left_imgs[t], right_imgs[t])
     except KeyboardInterrupt:
         player.end()
         exit()

@@ -9,7 +9,7 @@ e = IPython.embed
 from pathlib import Path
 
 class EpisodicDataset(torch.utils.data.Dataset):
-    def __init__(self, episode_ids, dataset_dir, camera_names, norm_stats, episode_len, control_mode, history_stack=0):
+    def __init__(self, episode_ids, dataset_dir, camera_names, norm_stats, episode_len, history_stack=0):
         super(EpisodicDataset).__init__()
         self.episode_ids = episode_ids
         self.dataset_dir = dataset_dir
@@ -17,7 +17,7 @@ class EpisodicDataset(torch.utils.data.Dataset):
         self.norm_stats = norm_stats
         self.is_sim = None
         self.max_pad_len = 200
-        action_str = 'qpos_action' if control_mode == 'qpos' else 'ee_action'
+        action_str = 'qpos_action'
 
         self.history_stack = history_stack
 
@@ -122,8 +122,8 @@ class EpisodicDataset(torch.utils.data.Dataset):
         return image_data, qpos_data, action_data, is_pad
 
 
-def get_norm_stats(dataset_dir, num_episodes, control_mode):
-    action_str = 'qpos_action' if control_mode == 'qpos' else 'ee_action'
+def get_norm_stats(dataset_dir, num_episodes):
+    action_str = 'qpos_action'
     all_qpos_data = []
     all_action_data = []
     all_episode_len = []
@@ -171,7 +171,6 @@ def BatchSampler(batch_size, episode_len_l, sample_weights=None):
         yield batch
 
 def load_data(dataset_dir, camera_names, batch_size_train, batch_size_val):
-    control_mode = "qpos"
     print(f'\nData from: {dataset_dir}\n')
 
     all_eps = find_all_processed_episodes(dataset_dir)
@@ -184,7 +183,7 @@ def load_data(dataset_dir, camera_names, batch_size_train, batch_size_val):
     val_indices = shuffled_indices[int(train_ratio * num_episodes):]
     print(f"Train episodes: {len(train_indices)}, Val episodes: {len(val_indices)}")
     # obtain normalization stats for qpos and action
-    norm_stats, all_episode_len = get_norm_stats(dataset_dir, num_episodes, control_mode)
+    norm_stats, all_episode_len = get_norm_stats(dataset_dir, num_episodes)
 
     train_episode_len_l = [all_episode_len[i] for i in train_indices]
     val_episode_len_l = [all_episode_len[i] for i in val_indices]
@@ -192,8 +191,8 @@ def load_data(dataset_dir, camera_names, batch_size_train, batch_size_val):
     batch_sampler_val = BatchSampler(batch_size_val, val_episode_len_l, None)
 
     # construct dataset and dataloader
-    train_dataset = EpisodicDataset(train_indices, dataset_dir, camera_names, norm_stats, train_episode_len_l, control_mode)
-    val_dataset = EpisodicDataset(val_indices, dataset_dir, camera_names, norm_stats, val_episode_len_l, control_mode)
+    train_dataset = EpisodicDataset(train_indices, dataset_dir, camera_names, norm_stats, train_episode_len_l)
+    val_dataset = EpisodicDataset(val_indices, dataset_dir, camera_names, norm_stats, val_episode_len_l)
     train_dataloader = DataLoader(train_dataset, batch_sampler=batch_sampler_train, pin_memory=True, num_workers=24, prefetch_factor=2)
     val_dataloader = DataLoader(val_dataset, batch_sampler=batch_sampler_val, pin_memory=True, num_workers=16, prefetch_factor=2)
 
