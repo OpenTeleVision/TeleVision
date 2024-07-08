@@ -12,12 +12,12 @@ from constants_vuer import *
 from TeleVision import OpenTeleVision
 import pyzed.sl as sl
 from dynamixel.active_cam import DynamixelAgent
-from multiprocessing import Array, Process, Queue, shared_memory
+from multiprocessing import Array, Process, shared_memory, Queue, Manager, Event, Semaphore
 
 resolution = (720, 1280)
-crop_size_w = 340  # (resolution[1] - resolution[0]) // 2
-crop_size_h = 270
-resolution_cropped = (resolution[0] - crop_size_h, resolution[1] - 2 * crop_size_w)  # 450 * 600
+crop_size_w = 1
+crop_size_h = 0
+resolution_cropped = (resolution[0] - crop_size_h, resolution[1] - 2 * crop_size_w)
 
 agent = DynamixelAgent(port="/dev/serial/by-id/usb-FTDI_USB__-__Serial_Converter_FT8IT033-if00-port0")
 agent._robot.set_torque_mode(True)
@@ -42,13 +42,13 @@ image_left = sl.Mat()
 image_right = sl.Mat()
 runtime_parameters = sl.RuntimeParameters()
 
-img_shape = (2 * resolution_cropped[0], resolution_cropped[1], 3)  # 900 * 600
-img_height, img_width = resolution_cropped[:2]  # 450 * 600
+img_shape = (resolution_cropped[0], 2 * resolution_cropped[1], 3)
+img_height, img_width = resolution_cropped[:2]
 shm = shared_memory.SharedMemory(create=True, size=np.prod(img_shape) * np.uint8().itemsize)
-shm_name = shm.name
 img_array = np.ndarray((img_shape[0], img_shape[1], 3), dtype=np.uint8, buffer=shm.buf)
-
-tv = OpenTeleVision(resolution_cropped, shm_name)
+image_queue = Queue()
+toggle_streaming = Event()
+tv = OpenTeleVision(resolution_cropped, shm.name, image_queue, toggle_streaming)
 
 while True:
     start = time.time()
@@ -75,10 +75,9 @@ while True:
         # print("Image resolution: {0} x {1} || Image timestamp: {2}\n".format(image.get_width(), image.get_height(),
         #         timestamp.get_milliseconds()))
 
-    bgr = np.vstack((image_left.numpy()[crop_size_h:, crop_size_w:-crop_size_w],
+    bgr = np.hstack((image_left.numpy()[crop_size_h:, crop_size_w:-crop_size_w],
                      image_right.numpy()[crop_size_h:, crop_size_w:-crop_size_w]))
     rgb = cv2.cvtColor(bgr, cv2.COLOR_BGRA2RGB)
-    # print(rgb.shape)
 
     np.copyto(img_array, rgb)
 

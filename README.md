@@ -68,6 +68,7 @@ Suppose the local ip address of the ubuntu machine is `192.168.8.102`.
 ```
     mkcert -install && mkcert -cert-file cert.pem -key-file key.pem 192.168.8.102 localhost 127.0.0.1
 ```
+ps. place the generated `cert.pem` and `key.pem` files in `teleop`.
 
 4. open firewall on server
 ```
