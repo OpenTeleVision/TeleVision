@@ -25,7 +25,7 @@ agent._robot.set_torque_mode(True)
 # Create a Camera object
 zed = sl.Camera()
 
-# Create a InitParameters object and set configuration parameters
+# Create an InitParameters object and set configuration parameters
 init_params = sl.InitParameters()
 init_params.camera_resolution = sl.RESOLUTION.HD720  # Use HD720 opr HD1200 video mode, depending on camera type.
 init_params.camera_fps = 60  # Set fps at 60
