@@ -54,7 +54,9 @@ Install Isaac Gym: https://developer.nvidia.com/isaac-gym/
 ## Teleoperation Guide
 
 ### Local streaming
-Apple does not allow WebXR on non-https connections. To test the application locally, we need to create a self-signed certificate and install it on the client. You need a ubuntu machine and a router. Connect the VisionPro and the ubuntu machine to the same router. 
+For **Quest** local streaming, follow [this](https://github.com/OpenTeleVision/TeleVision/issues/12#issue-2401541144) issue.
+
+**Apple** does not allow WebXR on non-https connections. To test the application locally, we need to create a self-signed certificate and install it on the client. You need a ubuntu machine and a router. Connect the VisionPro and the ubuntu machine to the same router. 
 1. install mkcert: https://github.com/FiloSottile/mkcert
 2. check local ip address: 
 
