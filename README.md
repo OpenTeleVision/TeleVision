@@ -84,7 +84,7 @@ or can be done with `ufw`:
 ```
 5.
 ```
-    self.app = Vuer(host='0.0.0.0', cert="./cert.pem", key="./key.pem")
+    tv = OpenTeleVision(self.resolution_cropped, shm.name, image_queue, toggle_streaming, ngrok=False)
 ```
 
 6. install ca-certificates on VisionPro
