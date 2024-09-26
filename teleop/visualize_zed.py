@@ -1,3 +1,8 @@
+"""
+Visualize the ZED camera feed through a cv2 window.
+Displays both the left and right camera feeds.
+"""
+
 import time
 from multiprocessing import Event, Queue, shared_memory
 
@@ -21,14 +26,13 @@ init_params.camera_resolution = (
 )  # Use HD720 opr HD1200 video mode, depending on camera type.
 init_params.camera_fps = 60  # Set fps at 60
 
+
 # Open the camera
 err = zed.open(init_params)
 if err != sl.ERROR_CODE.SUCCESS:
     print("Camera Open : " + repr(err) + ". Exit program.")
     exit()
 
-# Capture 50 frames and stop
-i = 0
 image_left = sl.Mat()
 image_right = sl.Mat()
 runtime_parameters = sl.RuntimeParameters()

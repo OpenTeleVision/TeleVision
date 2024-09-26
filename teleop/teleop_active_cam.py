@@ -9,7 +9,7 @@ from pytransform3d import rotations
 import time
 import cv2
 from constants_vuer import *
-from TeleVision import OpenTeleVision
+from tele_vision import OpenTeleVision
 import pyzed.sl as sl
 from dynamixel.active_cam import DynamixelAgent
 from multiprocessing import Array, Process, shared_memory, Queue, Manager, Event, Semaphore

@@ -9,14 +9,13 @@ from webrtc.zed_server import *
 
 class OpenTeleVision:
     def __init__(self, img_shape, shm_name, queue, toggle_streaming, stream_mode="image", cert_file="./cert.pem", key_file="./key.pem", ngrok=False):
-        # self.app=Vuer()
         self.img_shape = (img_shape[0], 2*img_shape[1], 3)
         self.img_height, self.img_width = img_shape[:2]
 
         if ngrok:
             self.app = Vuer(host='0.0.0.0', queries=dict(grid=False), queue_len=3)
         else:
-            self.app = Vuer(host='0.0.0.0', cert=cert_file, key=key_file, queries=dict(grid=False), queue_len=3)
+            self.app = Vuer(host="localhost", queue_len=3)
 
         self.app.add_handler("HAND_MOVE")(self.on_hand_move)
         self.app.add_handler("CAMERA_MOVE")(self.on_cam_move)

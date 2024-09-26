@@ -6,7 +6,7 @@ import math
 import numpy as np
 import torch
 
-from TeleVision import OpenTeleVision
+from tele_vision import OpenTeleVision
 from Preprocessor import VuerPreprocessor
 from constants_vuer import tip_indices
 from dex_retargeting.retargeting_config import RetargetingConfig
