@@ -19,6 +19,8 @@ Immersive Active Visual Feedback</h1>
     <img src="img/mit-logo.png" height="50">
 </p>
 
+<h3 align="center"> CoRL 2024 </h3>
+
 <p align="center">
 <h3 align="center"><a href="https://robot-tv.github.io/">Website</a> | <a href="https://arxiv.org/abs/2407.01512/">arXiv</a> | <a href="">Video</a> | <a href="">Summary</a> </h3>
   <div align="center"></div>
