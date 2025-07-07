@@ -11,3 +11,45 @@ __MACOSX/
 *.jpg
 *.svo
 *.png
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.tox/
+.nox/
+
+# Claude
+.claude/*
+
+# Poetry
+dist/
+poetry.lock
+
+# Virtual environments
+venv/
+.venv/
+ENV/
+env/
+.env
+
+# IDE
+.vscode/
+*.swp
+*.swo
+*~
+
+# Mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# pyenv
+.python-version
